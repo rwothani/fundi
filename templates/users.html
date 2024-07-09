@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+    <title>Manage Users</title>
+</head>
+<body>
+    <h1>Manage Users</h1>
+    <h2>Add User</h2>
+    <form action="{{ url_for('add_user') }}" method="post">
+        <label>Name:</label>
+        <input type="text" name="name" required><br>
+        <label>Fingerprint ID:</label>
+        <input type="number" name="fingerprint_id" required><br>
+        <label>Category:</label>
+        <select name="category" required>
+            {% for category in categories %}
+            <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
+        </select><br>
+        <input type="submit" value="Add User">
+    </form>
+
+    <h2>Existing Users</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Fingerprint ID</th>
+            <th>Category</th>
+            <th>Actions</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.fingerprint_id }}</td>
+            <td>{{ user.category }}</td>
+            <td>
+                <a href="{{ url_for('update_user', user_id=user.id) }}">Edit</a>
+                <form action="{{ url_for('delete_user', user_id=user.id) }}" method="post" style="display:inline;">
+                    <input type="submit" value="Delete">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{{ url_for('index') }}">Back to Attendance Log</a>
+</body>
+</html>
